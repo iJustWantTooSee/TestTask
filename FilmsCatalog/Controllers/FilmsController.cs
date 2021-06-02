@@ -26,9 +26,17 @@ namespace FilmsCatalog.Controllers
         private readonly String localPathToPoster = "images/posters";
         private readonly ILogger logger;
 
-        public FilmsController(ApplicationDbContext context)
+        public FilmsController(ApplicationDbContext context,
+            UserManager<User> userManager,
+            IUserPermissionsService userPermissions,
+            IDirectoryFilesServices directoryFiles,
+            ILogger<FilmsController> logger)
         {
             this.context = context;
+            this.userManager = userManager;
+            this.userPermissions = userPermissions;
+            this.directoryFiles = directoryFiles;
+            this.logger = logger;
         }
 
         [AllowAnonymous]
