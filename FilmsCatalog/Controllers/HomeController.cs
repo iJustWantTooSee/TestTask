@@ -20,7 +20,7 @@ namespace FilmsCatalog.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return this.RedirectToAction("ShowCatalog", "Films");
         }
 
         public IActionResult Privacy()
