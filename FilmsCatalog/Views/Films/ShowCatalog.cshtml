@@ -1,0 +1,40 @@
+﻿@model cloudscribe.Pagination.Models.PagedResult<Film>
+@using FilmsCatalog.Constans;
+@{
+    ViewData["Title"] = "Catalog";
+    ViewData["Controller"] = "Films";
+    ViewData["Action"] = "Catalog";
+    ViewData["MaxPageItems"] = FilmsPaginationConstans.MaxPagerItems;
+}
+
+@* Available only to an authorized user *@
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a class="btn btn-outline-dark" asp-action="Create">Add New</a>
+    </p>
+}
+
+
+<partial name="_PaginationPartial" view-data="ViewData" model="Model" />
+<section class="catalog shadow-sm mb-3">
+    @if (!Model.Data.Any())
+    {
+        <h6 class="font-italic text-center col-12">Sorry...</h6>
+        <p class="font-italic text-muted text-center col-12">No films in the catalog</p>
+    }
+    else
+    {
+        @foreach (var film in Model.Data)
+        {
+            <article class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                <a asp-controller="Films" asp-action="Details" asp-route-filmId="@film.Id" class="image fit"><img src="/@film.PathToPoster" /></a>
+                <header>
+                    <h5>Title:</h5><h2><a asp-controller="Films" asp-action="Details" asp-route-filmId="@film.Id">@film.Name</a></h2>
+                </header>
+                <footer><span class="date">Realease : <br />@film.YearsOfRealease.ToString("d")</span></footer>
+            </article>
+        }
+    }
+</section>
+<partial name="_PaginationPartial" view-data="ViewData" model="Model" />
