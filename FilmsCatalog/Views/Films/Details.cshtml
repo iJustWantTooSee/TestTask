@@ -1,54 +1,39 @@
 ﻿@model FilmsCatalog.Models.Film
+@inject FilmsCatalog.Services.IUserPermissionsService UserPermissions
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = $"Details about {Model.Name}";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Film</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Creator)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Creator.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearsOfRealease)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearsOfRealease)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Director)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Director)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PathToPoster)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PathToPoster)
-        </dd>
-    </dl>
+<div class="row shadow pt-4 pb-4">
+    <div class="col-12 col-md-5 mb-3"><img class="responsive" src="/@Model.PathToPoster" alt="poster" /></div>
+    <div class="col-7">
+        <div>
+            <h6 class="d-inline-block">Film name:&ensp;</h6>
+            <p class="d-inline-block">@Model.Name</p>
+        </div><hr />
+        <div>
+            <h6 class="d-inline-block">Description: </h6>
+            <p class="d-inline-block">@Model.Description</p>
+        </div><hr />
+        <div>
+            <h6 class="d-inline-block">Year of release: </h6>
+            <p class="d-inline-block">@Model.YearsOfRealease.ToString("d")</p>
+        </div><hr />
+        <div>
+            <h6 class="d-inline-block">Film Director: </h6>
+            <p class="d-inline-block">@Model.Director</p>
+        </div><hr />
+        <div>
+            <h6 class="d-inline-block">Author of the post: </h6>
+            <p class="d-inline-block">@Model.Creator.Email</p>
+        </div><hr />
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="pb-4 pt-4">
+    @if (UserPermissions.IsCanEditFilm(Model))
+    {
+        <a asp-controller="Films" asp-action="Edit" asp-route-filmId="@Model.Id" class="btn btn-outline-dark">Edit</a>
+    }
+    <a asp-controller="Films" asp-action="Catalog" class="btn btn-outline-dark">Back to Catalog</a>
 </div>
