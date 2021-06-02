@@ -116,6 +116,98 @@ namespace FilmsCatalog.Controllers
             return View(filmViewModel);
         }
 
+        [Authorize]
+        public async Task<IActionResult> Edit(Guid? filmId)
+        {
+            if (filmId == null)
+            {
+                return NotFound();
+            }
+
+            var film = await this.context.Film.FindAsync(filmId);
+            if (film == null || !userPermissions.IsCanEditFilm(film))
+            {
+                return NotFound();
+            }
+            this.ViewBag.FilmId = film.Id;
+
+            var filmViewModel = new EditFilmViewModel
+            {
+                Name = film.Name,
+                Description = film.Description,
+                YearsOfRealease = film.YearsOfRealease,
+                PathToPoster = film.PathToPoster,
+                Director = film.Director
+            };
+
+            return View(filmViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Edit(Guid filmId, EditFilmViewModel filmViewModel)
+        {
+            var film = await this.context.Film.FindAsync(filmId);
+            if (film == null || !userPermissions.IsCanEditFilm(film))
+            {
+                return NotFound();
+            }
+            this.ViewBag.FilmId = film.Id;
+
+            var user = await this.userManager.GetUserAsync(this.HttpContext.User);
+            if (ModelState.IsValid && user != null)
+            {
+                this.logger.LogInformation($"The film changes from: \n" +
+                        $"Id: {film.Id} \n" +
+                        $"Old film Title: {film.Name} \n" +
+                        $"Old film Description: {film.Description}\n" +
+                        $"Old Year of release of the film: {film.YearsOfRealease}\n" +
+                        $"Old Film Director: {film.Director}\n" +
+                        $"Old path to the poster : {film.PathToPoster}\n" +
+                        $"The user who edit film: {user}\n");
+                if (filmViewModel.Poster != null)
+                {
+                    if (!directoryFiles.IsAllowedFileFormat(filmViewModel.Poster))
+                    {
+                        this.ModelState.AddModelError(nameof(filmViewModel.Poster), "This file type is prohibited");
+                        return View(filmViewModel);
+                    }
+
+                    if (!this.directoryFiles.DeleteFile(film.PathToPoster))
+                    {
+                        throw new Exception();
+                    }
+                    film.PathToPoster = this.directoryFiles.GetNewLocalFilePath(filmViewModel.Poster, this.localPathToPoster);
+                    await this.directoryFiles.AddFileToServer(filmViewModel.Poster, film.PathToPoster);
+                }
+
+                film.Name = filmViewModel.Name;
+                film.Description = filmViewModel.Description;
+                film.YearsOfRealease = filmViewModel.YearsOfRealease;
+                film.Director = filmViewModel.Director;
+
+                try
+                {
+                    this.logger.LogInformation($"The film changes from: \n" +
+                        $"Id: {film.Id} \n" +
+                        $"New film Title: {film.Name} \n" +
+                        $"New film Description: {film.Description}\n" +
+                        $"New Year of release of the film: {film.YearsOfRealease}\n" +
+                        $"New Film Director: {film.Director}\n" +
+                        $"New path to the poster : {film.PathToPoster}\n" +
+                        $"The user who edit film: {user}\n");
+                    this.context.Update(film);
+                    await this.context.SaveChangesAsync();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                return RedirectToAction(nameof(ShowCatalog));
+            }
+            return View(filmViewModel);
+        }
 
     }
 }
