@@ -1,57 +1,51 @@
-﻿@model FilmsCatalog.Models.Film
+﻿@model FilmsCatalog.Models.ViewModels.EditFilmViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Film</h4>
+<h3 class="d-inline-block">Edit film:</h3>
+<h4 class="d-inline-block">@Model.Name</h4>
 <hr />
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-controller="Films" asp-action="Edit" asp-route-filmId="@ViewBag.FilmId" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="CreatorId" class="control-label"></label>
-                <select asp-for="CreatorId" class="form-control" asp-items="ViewBag.CreatorId"></select>
-                <span asp-validation-for="CreatorId" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input type="text" asp-for="Name" class="form-control" placeholder="Enter the name of the film" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" placeholder="Enter a description of the film" required></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="YearsOfRealease" class="control-label"></label>
-                <input asp-for="YearsOfRealease" class="form-control" />
+                <label asp-for="YearsOfRealease" class="control-label">Years of realease</label>
+                <input type="date" asp-for="YearsOfRealease" class="form-control" required />
                 <span asp-validation-for="YearsOfRealease" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Director" class="control-label"></label>
-                <input asp-for="Director" class="form-control" />
+                <input type="text" asp-for="Director" placeholder="Enter the film director" class="form-control" required />
                 <span asp-validation-for="Director" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PathToPoster" class="control-label"></label>
-                <input asp-for="PathToPoster" class="form-control" />
-                <span asp-validation-for="PathToPoster" class="text-danger"></span>
+                <label asp-for="Poster" class="control-label"></label>
+                <input type="file" asp-for="Poster" accept="image/jpeg,image/png" onchange="handleFileSelect(event)" class=" form-control" />
+                <span asp-validation-for="Poster" class="text-danger"></span>
+            </div>
+            <div id="preview" class="form-group">
+                <img src="/@Model.PathToPoster" alt="poster" style="width:400px;" />
+                <input type="hidden" asp-for="PathToPoster" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="submit" class="btn btn-outline-dark">Confirm</button>
+                <a class="btn btn-outline-dark" asp-controller="Films" asp-action="Catalog">Back to Catalog</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
