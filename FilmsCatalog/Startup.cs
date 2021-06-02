@@ -35,6 +35,7 @@ namespace FilmsCatalog
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IUserPermissionsService, UserPermissionsService>();
+            services.AddScoped<IDirectoryFilesServices, DirectoryFilesServices>();
 
             services.AddDatabaseDeveloperPageExceptionFilter();            
             services.AddControllersWithViews();
