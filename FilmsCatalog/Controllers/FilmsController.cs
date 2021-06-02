@@ -54,6 +54,25 @@ namespace FilmsCatalog.Controllers
             return View(filmsModel);
         }
 
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(Guid? filmId)
+        {
+            if (filmId == null)
+            {
+                return NotFound();
+            }
+
+            var film = await this.context.Film
+                .Include(f => f.Creator)
+                .FirstOrDefaultAsync(m => m.Id == filmId);
+            if (film == null)
+            {
+                return NotFound();
+            }
+
+            return View(film);
+        }
+
 
         [Authorize]
         public IActionResult Create()
