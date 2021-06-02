@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using FilmsCatalog.Services;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using FilmsCatalog.Constans;
+using cloudscribe.Pagination.Models;
 
 namespace FilmsCatalog.Controllers
 {
@@ -30,12 +32,26 @@ namespace FilmsCatalog.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Catalog()
+        public async Task<IActionResult> ShowCatalog(Int32 pageNumber = 1, Int32 pageSize = FilmsPaginationConstans.PageSize)
         {
+            Int32 excludeRecords = (pageNumber * pageSize) - pageSize;
             var films = await this.context.Film
-                .Include(c => c.Creator)
+                .OrderByDescending(t => t.YearsOfRealease)
+                .Skip(excludeRecords)
+                .Take(pageSize)
+                .AsNoTracking()
                 .ToListAsync();
-            return View(films);
+
+            var filmsModel = new PagedResult<Film>
+            {
+                Data = films,
+                TotalItems = this.context.Film.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+
+            };
+
+            return View(filmsModel);
         }
 
 
@@ -94,7 +110,7 @@ namespace FilmsCatalog.Controllers
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(Catalog));
+                return RedirectToAction(nameof(ShowCatalog));
             }
 
             return View(filmViewModel);
