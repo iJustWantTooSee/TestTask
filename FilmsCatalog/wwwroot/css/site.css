@@ -74,6 +74,15 @@ body {
 /* Render body styles
 -------------------------------------------------- */
 
+/* Details
+ * Setting the size of the preview image  */
+
+main > div.row > div> img.responsive {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+}
+
 /* Catalog header styles  */
 
 header > h2 {
