@@ -47,28 +47,27 @@ namespace FilmsCatalog.Services
             return fileExt;
         }
 
-        public string GetNewLocalFilePath(IFormFile file, string localPathToDownloadDirectory)
+        public string GetNewFileName(IFormFile file)
         {
-            var imageName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid() + this.GetFileExtension(file);
-
-            localPathToDownloadDirectory = localPathToDownloadDirectory.Trim('/');
-
-            String localFilePath = $"{localPathToDownloadDirectory}/{imageName}";
-
-            return localFilePath;
+            return DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid() + this.GetFileExtension(file);
         }
 
-        public async Task AddFileToServer(IFormFile file, string localPathToFile)
+        public async Task AddFileToServer(IFormFile file, String localDirectory, String fileName)
         {
-            var attachmentPath = Path
-                .Combine(this.hostingEnvironment.WebRootPath, localPathToFile);
-            using (var fileStream = new FileStream(attachmentPath, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.Read))
+            var directoryToSave = Path
+                .Combine(this.hostingEnvironment.WebRootPath, localDirectory);
+            if (!Directory.Exists(directoryToSave))
+            {
+                Directory.CreateDirectory(directoryToSave);
+            }
+            
+            using (var fileStream = new FileStream($"{directoryToSave}/{fileName}", FileMode.CreateNew, FileAccess.ReadWrite, FileShare.Read))
             {
                 await file.CopyToAsync(fileStream);
             }
 
             var user = this.userManager.GetUserId(this.httpContextAccessor.HttpContext.User);
-            this.logger.LogInformation($"A file with a local path was uploaded: {localPathToFile}." +
+            this.logger.LogInformation($"A file with a local path was uploaded: {localDirectory}/{fileName}." +
                 $"The user who uploaded the file: {user}" +
                 $" Logging time: {DateTime.Now}");
         }

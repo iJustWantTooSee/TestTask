@@ -23,7 +23,6 @@ namespace FilmsCatalog.Controllers
         private readonly IUserPermissionsService userPermissions;
         private readonly IDirectoryFilesServices directoryFiles;
 
-        private readonly String localPathToPoster = "images/posters";
         private readonly ILogger logger;
 
         public FilmsController(ApplicationDbContext context,
@@ -118,10 +117,14 @@ namespace FilmsCatalog.Controllers
                     CreatorId = user.Id
 
                 };
-                film.PathToPoster = this.directoryFiles
-                    .GetNewLocalFilePath(filmViewModel.Poster, this.localPathToPoster);
+                var fileName = this.directoryFiles
+                    .GetNewFileName(filmViewModel.Poster);
 
-                await this.directoryFiles.AddFileToServer(filmViewModel.Poster, film.PathToPoster);
+                film.PathToPoster = $"{LocalPathsToDirectories.PATH_TO_POSTERS}/{fileName}";
+
+                await this.directoryFiles.AddFileToServer(filmViewModel.Poster,
+                    LocalPathsToDirectories.PATH_TO_POSTERS,
+                    fileName);
 
                 try
                 {
@@ -205,8 +208,14 @@ namespace FilmsCatalog.Controllers
                     {
                         throw new Exception();
                     }
-                    film.PathToPoster = this.directoryFiles.GetNewLocalFilePath(filmViewModel.Poster, this.localPathToPoster);
-                    await this.directoryFiles.AddFileToServer(filmViewModel.Poster, film.PathToPoster);
+
+                    var fileName = this.directoryFiles.GetNewFileName(filmViewModel.Poster);
+                    
+                    film.PathToPoster = $"{LocalPathsToDirectories.PATH_TO_POSTERS}/{fileName}";
+                    
+                    await this.directoryFiles.AddFileToServer(filmViewModel.Poster,
+                        LocalPathsToDirectories.PATH_TO_POSTERS,
+                        fileName);
                 }
 
                 film.Name = filmViewModel.Name;

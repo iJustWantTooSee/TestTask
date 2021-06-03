@@ -12,9 +12,9 @@ namespace FilmsCatalog.Services
 
         String GetFileExtension(IFormFile file);
 
-        String GetNewLocalFilePath(IFormFile file, String localPathToDownloadDirectory);
+        String GetNewFileName(IFormFile file);
 
-        Task AddFileToServer(IFormFile file, String localPathToDownloadDirectory);
+        Task AddFileToServer(IFormFile file, String localDirectory ,String  fileName);
 
         Boolean DeleteFile(String localPathToFile);
 
