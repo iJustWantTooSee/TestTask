@@ -13,7 +13,7 @@ namespace FilmsCatalog.Services
 {
     public class DirectoryFilesServices : IDirectoryFilesServices
     {
-        private static readonly HashSet<String> AllowedExtensions = new HashSet<String> { ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".raw", ".bmp" };
+        private static readonly HashSet<String> AllowedExtensions = new HashSet<String> { ".jpg", ".jpeg", ".png", ".gif", ".tiff", ".raw", ".bmp", ".jfif" };
         private readonly ILogger logger;
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IHttpContextAccessor httpContextAccessor;
