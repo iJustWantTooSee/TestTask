@@ -225,14 +225,6 @@ namespace FilmsCatalog.Controllers
 
                 try
                 {
-                    this.logger.LogInformation($"The film changes from: \n" +
-                        $"Id: {film.Id} \n" +
-                        $"New film Title: {film.Name} \n" +
-                        $"New film Description: {film.Description}\n" +
-                        $"New Year of release of the film: {film.YearsOfRealease}\n" +
-                        $"New Film Director: {film.Director}\n" +
-                        $"New path to the poster : {film.PathToPoster}\n" +
-                        $"The user who edit film: {user}\n");
                     this.context.Update(film);
                     await this.context.SaveChangesAsync();
                 }
@@ -240,6 +232,15 @@ namespace FilmsCatalog.Controllers
                 {
                     throw;
                 }
+                this.logger.LogInformation($"The film changes from: \n" +
+                       $"Id: {film.Id} \n" +
+                       $"New film Title: {film.Name} \n" +
+                       $"New film Description: {film.Description}\n" +
+                       $"New Year of release of the film: {film.YearsOfRealease}\n" +
+                       $"New Film Director: {film.Director}\n" +
+                       $"New path to the poster : {film.PathToPoster}\n" +
+                       $"The user who edit film: {user}\n");
+
                 return RedirectToAction(nameof(ShowCatalog));
             }
             return View(filmViewModel);
