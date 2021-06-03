@@ -58,7 +58,7 @@ namespace FilmsCatalog.Controllers
 
             };
 
-            return View(filmsModel);
+            return this.View(filmsModel);
         }
 
         [AllowAnonymous]
@@ -66,7 +66,7 @@ namespace FilmsCatalog.Controllers
         {
             if (filmId == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var film = await this.context.Film
@@ -74,17 +74,17 @@ namespace FilmsCatalog.Controllers
                 .FirstOrDefaultAsync(m => m.Id == filmId);
             if (film == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(film);
+            return this.View(film);
         }
 
 
         [Authorize]
         public IActionResult Create()
         {
-            return View(new FilmViewModel());
+            return this.View(new FilmViewModel());
         }
 
         [HttpPost]
@@ -96,7 +96,7 @@ namespace FilmsCatalog.Controllers
             if (filmViewModel.Poster == null)
             {
                 this.ModelState.AddModelError(nameof(filmViewModel.Poster), "Upload an image for the poster");
-                return View(filmViewModel);
+                return this.View(filmViewModel);
             }
 
             if (!directoryFiles.IsAllowedFileFormat(filmViewModel.Poster))
@@ -140,10 +140,10 @@ namespace FilmsCatalog.Controllers
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(ShowCatalog));
+                return this.RedirectToAction(nameof(ShowCatalog));
             }
 
-            return View(filmViewModel);
+            return this.View(filmViewModel);
         }
 
         [Authorize]
@@ -151,13 +151,13 @@ namespace FilmsCatalog.Controllers
         {
             if (filmId == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var film = await this.context.Film.FindAsync(filmId);
             if (film == null || !userPermissions.IsCanEditFilm(film))
             {
-                return NotFound();
+                return this.NotFound();
             }
             this.ViewBag.FilmId = film.Id;
 
@@ -181,7 +181,7 @@ namespace FilmsCatalog.Controllers
             var film = await this.context.Film.FindAsync(filmId);
             if (film == null || !userPermissions.IsCanEditFilm(film))
             {
-                return NotFound();
+                return this.NotFound();
             }
             this.ViewBag.FilmId = film.Id;
 
@@ -241,10 +241,38 @@ namespace FilmsCatalog.Controllers
                        $"New path to the poster : {film.PathToPoster}\n" +
                        $"The user who edit film: {user}\n");
 
-                return RedirectToAction(nameof(ShowCatalog));
+                return this.RedirectToAction(nameof(ShowCatalog));
             }
-            return View(filmViewModel);
+            return this.View(filmViewModel);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = ApplicationRoles.Administrators)]
+        public async Task<IActionResult> Delete(Guid? filmId)
+        {
+            if (filmId == null)
+            {
+                return this.NotFound();
+            }
+
+            var film = await this.context.Film.SingleOrDefaultAsync(f => f.Id == filmId);
+
+            if (film == null)
+            {
+                return this.NotFound();
+            }
+
+            if (!this.directoryFiles.DeleteFile(film.PathToPoster))
+            {
+                throw new Exception();
+            }
+
+            this.context.Film.Remove(film);
+            await this.context.SaveChangesAsync();
+
+            return this.RedirectToAction(nameof(ShowCatalog));
+        }
     }
 }

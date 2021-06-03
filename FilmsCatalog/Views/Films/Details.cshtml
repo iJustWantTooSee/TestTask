@@ -35,5 +35,25 @@
     {
         <a asp-controller="Films" asp-action="Edit" asp-route-filmId="@Model.Id" class="btn btn-outline-dark">Edit</a>
     }
-    <a asp-controller="Films" asp-action="Catalog" class="btn btn-outline-dark">Back to Catalog</a>
+    <a asp-controller="Films" asp-action="ShowCatalog" class="btn btn-outline-dark">Back to Catalog</a>
+    @if (User.IsInRole(ApplicationRoles.Administrators))
+    {
+        <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modalConfirm">
+            Delete
+        </button>
+
+        <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h6>Вы действительно хотите удалить всю информацию об этом фильме?</h6>
+                    </div>
+                    <form class="modal-footer" method="post">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" asp-controller="Films" asp-action="Delete" asp-route-filmId="@Model.Id" class="btn btn-danger">Да, хочу</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
 </div>
