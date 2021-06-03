@@ -247,6 +247,10 @@ namespace FilmsCatalog.Controllers
         }
 
 
+        /*Т.к. только пользователь может редактировать фильм, который он выложил, то было принято решение
+         *добавить системную роль - администратор, который сможет модерировать контент и удалять
+         *запрещенный контент с сайта
+         */
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = ApplicationRoles.Administrators)]
