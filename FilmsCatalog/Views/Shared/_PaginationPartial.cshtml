@@ -1,8 +1,9 @@
-﻿@* Документация используемой библиотеке https://www.cloudscribe.com/cloudscribe-web-pagination *@
+﻿@*Документация используемой библиотеке https://www.cloudscribe.com/cloudscribe-web-pagination*@
+
 <cs-pager cs-paging-pagenumber=(int)Model.PageNumber
           cs-paging-totalitems=(int)Model.TotalItems
           cs-paging-pagesize=Model.PageSize
-          cs-paging-maxpageritems=@ViewData["MaxPageItems"]
+          cs-paging-maxpageritems=(int)@ViewData["MaxNumberPages"]
           cs-pagenumber-param="pagenumber"
           asp-controller=@ViewData["Controller"]
           asp-action=@ViewData["Action"]

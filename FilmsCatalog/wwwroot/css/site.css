@@ -102,6 +102,11 @@ header a {
 
 /* Catalog body styles  */
 
+main > ul.pagination > li.active > span {
+    background-color: #343a40 !important;
+    border-color: #343a40 !important;
+}
+
 main > .catalog {
     display: -webkit-flex;
     display: flex;

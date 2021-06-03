@@ -39,7 +39,7 @@ namespace FilmsCatalog.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> ShowCatalog(Int32 pageNumber = 1, Int32 pageSize = FilmsPaginationConstans.PageSize)
+        public async Task<IActionResult> ShowCatalog(Int32 pageNumber = 1, Int32 pageSize = FilmsPaginationConstans.PAGE_SIZE)
         {
             Int32 excludeRecords = (pageNumber * pageSize) - pageSize;
             var films = await this.context.Film
