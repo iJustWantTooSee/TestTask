@@ -9,23 +9,23 @@
     <div class="col-12 col-md-5 mb-3"><img class="responsive" src="/@Model.PathToPoster" alt="poster" /></div>
     <div class="col-7">
         <div>
-            <h6 class="d-inline-block">Film name:&ensp;</h6>
+            <h6 class="d-inline-block">Название:&ensp;</h6>
             <p class="d-inline-block">@Model.Name</p>
         </div><hr />
         <div>
-            <h6 class="d-inline-block">Description: </h6>
+            <h6 class="d-inline-block">Описание: </h6>
             <p class="d-inline-block">@Model.Description</p>
         </div><hr />
         <div>
-            <h6 class="d-inline-block">Year of release: </h6>
+            <h6 class="d-inline-block">Год выпуска: </h6>
             <p class="d-inline-block">@Model.YearsOfRealease.ToString("d")</p>
         </div><hr />
         <div>
-            <h6 class="d-inline-block">Film Director: </h6>
+            <h6 class="d-inline-block">Режиссёр: </h6>
             <p class="d-inline-block">@Model.Director</p>
         </div><hr />
         <div>
-            <h6 class="d-inline-block">Author of the post: </h6>
+            <h6 class="d-inline-block">Автор поста: </h6>
             <p class="d-inline-block">@Model.Creator.Email</p>
         </div><hr />
     </div>
@@ -33,9 +33,9 @@
 <div class="pb-4 pt-4">
     @if (UserPermissions.IsCanEditFilm(Model))
     {
-        <a asp-controller="Films" asp-action="Edit" asp-route-filmId="@Model.Id" class="btn btn-outline-dark">Edit</a>
+        <a asp-controller="Films" asp-action="Edit" asp-route-filmId="@Model.Id" class="btn btn-outline-dark">Редактировать</a>
     }
-    <a asp-controller="Films" asp-action="ShowCatalog" class="btn btn-outline-dark">Back to Catalog</a>
+    <a asp-controller="Films" asp-action="ShowCatalog" class="btn btn-outline-dark">Вернуться к каталогу</a>
     @if (User.IsInRole(ApplicationRoles.Administrators))
     {
         <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modalConfirm">

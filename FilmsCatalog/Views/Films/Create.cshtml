@@ -4,42 +4,42 @@
     ViewData["Title"] = "Create";
 }
 
-<h4>Add new film</h4>
+<h4>Добавление нового фильма</h4>
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-4">
         <form asp-controller="Films" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input type="text" asp-for="Name" class="form-control" placeholder="Enter the name of the film" required />
+                <label asp-for="Name" class="control-label">Название фильма</label>
+                <input type="text" asp-for="Name" class="form-control" placeholder="Введите название фильма" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" placeholder="Enter a description of the film" required></textarea>
+                <label asp-for="Description" class="control-label">Описание фильма</label>
+                <textarea asp-for="Description" class="form-control" placeholder="Введите описание фильма" required></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="YearsOfRealease" class="control-label">Years of realease</label>
-                <input type="date" asp-for="YearsOfRealease" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                <label asp-for="YearsOfRealease" class="control-label">Год выпуска</label>
+                <input type="date" asp-for="YearsOfRealease" value="@DateTime.Now.ToString("d")" class="form-control" required />
                 <span asp-validation-for="YearsOfRealease" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Director" class="control-label"></label>
-                <input type="text" asp-for="Director" placeholder="Enter the film director" class="form-control" required />
+                <label asp-for="Director" class="control-label">Режиссёр</label>
+                <input type="text" asp-for="Director" placeholder="Введите ФИО режиссера" class="form-control" required />
                 <span asp-validation-for="Director" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Poster" class="control-label"></label>
-                <input type="file" asp-for="Poster" accept="image/jpeg,image/png" onchange="handleFileSelect(event)" class=" form-control" required title="Upload an image for the poster" />
+                <label asp-for="Poster" class="control-label">Постер к фильму</label>
+                <input type="file" asp-for="Poster" accept="image/jpeg,image/png" onchange="handleFileSelect(event)" class=" form-control" required title="Загрузите постер к фильму" />
                 <span asp-validation-for="Poster" class="text-danger"></span>
             </div>
             <div id="preview" class="form-group">
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-dark" />
-                <a class="btn btn-outline-dark" asp-controller="Films" asp-action="ShowCatalog">Back to Catalog</a>
+                <input type="submit" value="Создать" class="btn btn-outline-dark" />
+                <a class="btn btn-outline-dark" asp-controller="Films" asp-action="ShowCatalog">Вернуться к каталогу</a>
             </div>
         </form>
     </div>

@@ -241,7 +241,7 @@ namespace FilmsCatalog.Controllers
                        $"New path to the poster : {film.PathToPoster}\n" +
                        $"The user who edit film: {user}\n");
 
-                return this.RedirectToAction(nameof(ShowCatalog));
+                return this.RedirectToAction(nameof(Details), new { filmId = film.Id});
             }
             return this.View(filmViewModel);
         }

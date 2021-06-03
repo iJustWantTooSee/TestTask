@@ -11,7 +11,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>
-        <a class="btn btn-outline-dark" asp-action="Create">Add New</a>
+        <a class="btn btn-outline-dark" asp-action="Create">Добавить новый фильм</a>
     </p>
 }
 
@@ -20,8 +20,8 @@
 <section class="catalog shadow-sm mb-3">
     @if (!Model.Data.Any())
     {
-        <h6 class="font-italic text-center col-12">Sorry...</h6>
-        <p class="font-italic text-muted text-center col-12">No films in the catalog</p>
+        <h6 class="font-italic text-center col-12">Простите...</h6>
+        <p class="font-italic text-muted text-center col-12">В каталоге ещё нет фильмов</p>
     }
     else
     {
@@ -30,9 +30,9 @@
             <article class="col-12 col-sm-6 col-lg-4 col-xl-3">
                 <a asp-controller="Films" asp-action="Details" asp-route-filmId="@film.Id" class="image fit"><img src="/@film.PathToPoster" /></a>
                 <header>
-                    <h5>Title:</h5><h2><a asp-controller="Films" asp-action="Details" asp-route-filmId="@film.Id">@film.Name</a></h2>
+                    <h5>Название:</h5><h2><a asp-controller="Films" asp-action="Details" asp-route-filmId="@film.Id">@film.Name</a></h2>
                 </header>
-                <footer><span class="date">Realease : <br />@film.YearsOfRealease.ToString("d")</span></footer>
+                <footer><span class="date">Год выпуска : <br />@film.YearsOfRealease.ToString("d")</span></footer>
             </article>
         }
     }

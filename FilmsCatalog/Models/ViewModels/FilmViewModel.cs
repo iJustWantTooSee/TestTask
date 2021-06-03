@@ -9,16 +9,16 @@ namespace FilmsCatalog.Models.ViewModels
 {
     public class FilmViewModel
     {
-        [Required(ErrorMessage = "Enter the name of the film")]
+        [Required(ErrorMessage = "Введите название фильма")]
         public String Name { get; set; }
 
-        [Required(ErrorMessage = "Enter a description of the film")]
+        [Required(ErrorMessage = "Введите описание к фильму")]
         public String Description { get; set; }
 
-        [Required(ErrorMessage = "Enter the release year of the film")]
+        [Required(ErrorMessage = "Введите год выхода фильма")]
         public DateTime YearsOfRealease { get; set; }
 
-        [Required(ErrorMessage = "Enter the film director")]
+        [Required(ErrorMessage = "Введите режиссера фильма")]
         public String Director { get; set; }
 
         public IFormFile Poster { get; set; }
