@@ -30,6 +30,7 @@ namespace FilmsCatalog
 
             services.AddScoped<IUserPermissionsService, UserPermissionsService>();
             services.AddScoped<IDirectoryFilesServices, DirectoryFilesServices>();
+            services.AddCloudscribePagination();
 
             services.AddDatabaseDeveloperPageExceptionFilter();            
             services.AddControllersWithViews();
